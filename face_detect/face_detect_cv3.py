@@ -6,7 +6,7 @@
 # Simple usage.
 #
 # python face_detect_cv3.py \
-#        [Image directory to probe] [Cropped image directory to store]
+#        [Image root directory to probe] [Cropped image root directory to store]
 
 import cv2
 import sys
@@ -41,9 +41,9 @@ def faceCrop(imagePath):
 
     # if the number of faces exceeds 2, we ignore this image
     if len(faces) >= 2:
+        print("Face num >= 2")
         return cropImageList
 
-    # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
         cropImg = image[y:y+h, x:x+w]
         cropImageList.append(cropImg) # Note: image format -> [y: y+h, x: x+w]
@@ -74,9 +74,27 @@ def imagesCrop(imageDir, cropDir):
                     + os.path.basename(image), cropImage)
             index += 1
 
+def traverse_folder(imageDir, cropDir):
+    """Probe folders in image Dir and call imagesCrop
+       Image data format is on below.
+            -> [root directory]/[image classification]/*.jpg
+       Cropped image will be stored on this directory
+            -> [crop dir]/[image classification]/
+       Arg:
+           imageDir : Root directory to probe
+           cropDir : Root directory to store cropped images
+    """
+
+    for root, dirs, files in os.walk(imageDir):
+        print(root)
+        for subdir in dirs:
+            if not os.path.exists(os.path.join(cropDir, subdir)):
+                os.mkdir(os.path.join(cropDir, subdir))
+            imagesCrop(os.path.join(root, subdir + "/"), os.path.join(cropDir, subdir + "/"))
+
 def main():
-    imagePath = sys.argv[1]
-    cropDir = sys.argv[2]
-    imagesCrop(imagePath, cropDir)
+    imageRoot = sys.argv[1]
+    cropRoot = sys.argv[2]
+    traverse_folder(imageRoot, cropRoot)
 
 main()
