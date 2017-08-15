@@ -39,6 +39,10 @@ def faceCrop(imagePath):
         minSize=(224, 224)
     )
 
+    # if the number of faces exceeds 2, we ignore this image
+    if len(faces) >= 2:
+        return cropImageList
+
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
         cropImg = image[y:y+h, x:x+w]
