@@ -27,6 +27,9 @@ def getPoliticianImage():
 	# excel path : second argument
 	excel_path = sys.argv[2]
 
+	# max number of image : third argument
+	max_num_image = int(sys.argv[3])
+
 	excelFile = xlrd.open_workbook(excel_path)
 	politician_key_value_list = excelFile.sheet_by_index(0)
 
@@ -41,7 +44,7 @@ def getPoliticianImage():
 		bing_crawler = BingImageCrawler(parser_threads=2, downloader_threads=4,
 			storage={'root_dir': total_path})
 
-		bing_crawler.crawl(keyword=politician_key_value_list.cell_value(i, 0), offset=0, max_num = 1000, max_size = None)
+		bing_crawler.crawl(keyword=politician_key_value_list.cell_value(i, 0), offset=0, max_num = max_num_image, max_size = None)
 
 def main():
 	getPoliticianImage()
