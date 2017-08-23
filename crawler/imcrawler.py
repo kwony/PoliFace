@@ -3,6 +3,8 @@
 작성자 : 류현준
 작성일 : 2017-08-20
 설 명 : 엑셀로 사진을 받아서 그림을 다운받음
+변수  : argv[1] (이미지 받을 root dir)
+	   argv[2] (엑셀 파일 위치)
 
 install package : xlrd, icrawler
 
