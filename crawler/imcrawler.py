@@ -15,8 +15,7 @@ pip3 install xlrd
 #-*- coding: utf-8 -*-
 
 import sys
-sys.path.insert(0, '/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/icrawler')
-from icrawler.builtin import BingImageCrawler
+from icrawler.builtin import GoogleImageCrawler
 import xlrd
 
 def getPoliticianImage():
@@ -33,7 +32,7 @@ def getPoliticianImage():
 	excelFile = xlrd.open_workbook(excel_path)
 	politician_key_value_list = excelFile.sheet_by_index(0)
 
-	for i in range(0, politician_key_value_list.ncols):
+	for i in range(0, politician_key_value_list.nrows):
 
 		# folder name (politician english name)
 		folder_name = politician_key_value_list.cell_value(i, 1)
@@ -41,10 +40,11 @@ def getPoliticianImage():
 		# directory which you can put
 		total_path = image_path + '/' + folder_name
 
-		bing_crawler = BingImageCrawler(parser_threads=2, downloader_threads=4,
+		google_crawler = GoogleImageCrawler(parser_threads=2, downloader_threads=8,
 			storage={'root_dir': total_path})
 
-		bing_crawler.crawl(keyword=politician_key_value_list.cell_value(i, 0), offset=0, max_num = max_num_image, max_size = None)
+		google_crawler.crawl(keyword=politician_key_value_list.cell_value(i, 0), offset=0, max_num = max_num_image,
+							date_min=None, date_max=None, min_size = (200, 200), max_size = None)
 
 def main():
 	getPoliticianImage()
