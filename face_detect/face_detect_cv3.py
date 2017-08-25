@@ -31,7 +31,14 @@ def faceCrop(imagePath, faceMargin):
 
     # Read the image
     image = cv2.imread(imagePath)
+
+    if image is None:
+        return []
+
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    if gray is None:
+        return []
 
     # Detect faces in the image
     faces = faceCascade.detectMultiScale(
