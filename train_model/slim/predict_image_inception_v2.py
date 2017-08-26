@@ -9,6 +9,7 @@ Usage:
 $ python predict_image_inception_v2.py \
         --image_file = {image file path} \
         --check_point = {pre-trained model path} \
+        --label_file = {File including classes list} \
 """
 
 import numpy as np
@@ -38,19 +39,24 @@ tf.app.flags.DEFINE_string(
 tf.app.flags.DEFINE_string(
         'image_file', None, 'Image file to predict')
 
-tf.app.flags.DEFINE_integer(
-        'num_classes', 11, 'The number of classes of trained model')
+tf.app.flags.DEFINE_string(
+        'label_file', None, 'Label file created by TF converting')
 
 FLAGS = tf.app.flags.FLAGS
 
-def predict(image_file, check_point):
+def predict(image_file, check_point, label_file):
     """ Predict image file with pre-trained model and print top-3 predictions.
     Arg:
         image_file: Image file to predict.
         check_point: Pretrained model path.
+        label_file: Classes list file with txt format
     Returns:
         Nothing.
     """
+
+    with open(label_file) as f:
+        classes = f.readlines()
+
     with tf.Graph().as_default():
         with open(image_file, "rb") as image_file:
             image_string = image_file.read()
@@ -61,7 +67,7 @@ def predict(image_file, check_point):
         # Create the model, use the default arg scope to configure the batch norm parameters.
         with slim.arg_scope(inception.inception_v2_arg_scope()):
             logits, _ = inception.inception_v2(processed_images,
-                    num_classes=FLAGS.num_classes, is_training=False)
+                    num_classes=len(classes), is_training=False)
         probabilities = tf.nn.softmax(logits)
 
         init_fn = slim.assign_from_checkpoint_fn(check_point, slim.get_model_variables('InceptionV2'))
@@ -72,14 +78,10 @@ def predict(image_file, check_point):
             probabilities = probabilities[0, 0:]
             sorted_inds = [i[0] for i in sorted(enumerate(-probabilities), key=lambda x:x[1])]
 
-        names = ['Roh hae chan', 'Ahn chul soo', 'Ahn hee jung',
-                'Chu mi ae', 'Hong jun pyo', 'Kim moo sung',
-                'Lee jae myung', 'Moon jae in', 'Park ji won', 'Sim sang jung', 'Yu seung min']
-
         # Show top 3 predictions
-        for i in range(3):
+        for i in range(5):
             index = sorted_inds[i]
-            print('Probability %0.2f%% => [%s]' % (probabilities[index] * 100, names[index]))
+            print('Probability %0.2f%% => [%s]' % (probabilities[index] * 100, classes[index]))
 
 def main(_):
     if not FLAGS.image_file:
@@ -88,7 +90,10 @@ def main(_):
     if not FLAGS.check_point:
         raise ValueError('You must supply pretrained model path with --check_point')
 
-    predict(FLAGS.image_file, FLAGS.check_point)
+    if not FLAGS.label_file:
+        raise ValueError('You must set label file with --label_file')
+
+    predict(FLAGS.image_file, FLAGS.check_point, FLAGS.label_file)
 
 if __name__ == '__main__':
     tf.app.run()
