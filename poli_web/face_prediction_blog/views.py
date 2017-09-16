@@ -1,20 +1,32 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from .forms import PhotoForm
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
-def home(request):
-    return render(request, 'face_prediction_blog/home.html', {})
+from .forms import PictureForm
+from .models import Picture
 
-def upload_pic(request):
+def list(request):
+    # Handle file upload
     if request.method == 'POST':
-        form = PhotoForm(request.POST, request.FILES)
+        form = PictureForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = PhotoForm()
+            newdoc = Picture(picfile=request.FILES['picturefile'])
+            newdoc.save()
 
-    return render(request, 'face_prediction_blog/home.html', {
-        'form': form
-    })
+            # Redirect to the document list after POST
+            return HttpResponseRedirect(reverse('list'))
+    else:
+        form = PictureForm()  # A empty, unbound form
+
+    # Load documents for the list page
+    pictures = Picture.objects.all()
+
+    # Render list page with the documents and the form
+    return render(
+        request,
+        'face_prediction_blog/index.html',
+        { 'pictures': pictures, 'form': form }
+    )
