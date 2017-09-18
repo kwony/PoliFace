@@ -13,8 +13,8 @@ def list(request):
     if request.method == 'POST':
         form = PictureForm(request.POST, request.FILES)
         if form.is_valid():
-            newdoc = Picture(picfile=request.FILES['picturefile'])
-            newdoc.save()
+            newpic = Picture(picfile=request.FILES['picfile'])
+            newpic.save()
 
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('list'))
