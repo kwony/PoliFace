@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Poliface Image Upload Page</title>	
-	</head>
+{% extends 'face_prediction_blog/base.html' %}
 
-	<body>
+{% block content %}
 		<!-- List of uploaded documents -->
 		{% if usersUglyFace %}
 			<ul>
@@ -28,7 +23,4 @@
 			</p>
 			<p><input type="submit" value="Upload" /></p>
 		</form>
-		
-	</body>
-
-</html> 
+{% endblock %}

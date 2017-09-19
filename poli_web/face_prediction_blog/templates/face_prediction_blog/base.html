@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/face_prediction.css' %}">
+        <title> Welcome to Poliface </title>
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="">Welcome to Poliface </a></h1>
+        </div>
+        <ul>
+            <li><a href="home"> HOME </a></li>
+            <li><a href="resemble"> RESEMBLE </a></li>
+            <li><a href="rank"> RANK </a></li>
+            <li><a href="info"> INFO </a></li>
+        </ul>
+        <div class="content-menu">
+            <div class="row">
+                <div class="col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

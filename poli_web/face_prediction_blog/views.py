@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from .forms import PictureForm
 from .models import Picture
 
-def list(request):
+def resemble(request):
     # Handle file upload
     if request.method == 'POST':
         form = PictureForm(request.POST, request.FILES)
@@ -17,7 +17,7 @@ def list(request):
             newpic.save()
 
             # Redirect to the document list after POST
-            return HttpResponseRedirect(reverse('list'))
+            return HttpResponseRedirect(reverse('resemble'))
     else:
         form = PictureForm()  # A empty, unbound form
 
@@ -27,6 +27,15 @@ def list(request):
     # Render list page with the documents and the form
     return render(
         request,
-        'face_prediction_blog/index.html',
+        'face_prediction_blog/resemble.html',
         { 'pictures': pictures, 'form': form }
     )
+
+def rank(request):
+    return render(request, 'face_prediction_blog/rank.html', {})
+
+def info(request):
+    return render(request, 'face_prediction_blog/info.html', {})
+
+def home(request):
+    return render(request, 'face_prediction_blog/home.html', {})
