@@ -1,0 +1,111 @@
+h1 a {
+    color: #FCA205;
+    font-family: 'Lobster';
+}
+
+body {
+    padding-left: 15px;
+}
+
+.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+}
+
+.content {
+    margin-left: 40px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Lobster', cursive;
+}
+
+
+.save {
+    float: right;
+}
+
+.post-form textarea, .post-form input {
+    width: 100%;
+}
+
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /*background-color: #FAD775;*/
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white-space;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #FAB001;
+}
+
+.start_prediction_button {
+    padding : 30px;
+    border-radius: 6px;
+    background-color: #FCA205;
+    font-size: 25px;
+    color: white;
+    width: 50%;
+    cursor: pointer;
+    transition: all 0.5s;
+    margin-top: 50%;
+    margin-left: 50%;
+}
+
+.start_prediction_button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .start_prediction_button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+
+  .start_prediction_button:hover span {
+    padding-right: 25px;
+  }
+  
+  .start_prediction_button:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+
+  .start_prediction_button span a {
+      text-decoration: none;
+      color: white;
+  }
