@@ -1,13 +1,26 @@
 #
 # Author(s) Hyeonkwon Cho(chkwon91@gmail.com)
 #
-# Probe image(.jpg) files in directory and crop face area in image.
-# 
-# Simple usage.
-#
-# python face_detect_cv3.py \
-#        [Image root directory to probe] [Cropped image root directory to store]
-#        [Face marginal space]
+
+"""
+Probe image(.jpg) file and crop face area in image.
+
+There are two command options
+
+1. Probe image files in directory and crop face area
+    python face_detect_cv3.py \
+        crop_dir
+        [Image root directory to probe]
+        [Cropped image root directory to store]
+        [Face marginal space]
+
+2. Probe image file and crop face area
+    python face_detect_cv3.py \
+        crop_file
+        [Image file to crop]
+        [Cropped file name]
+        [Face marginal space]
+"""
 
 import cv2
 import sys
@@ -23,7 +36,7 @@ def faceCrop(imagePath, faceMargin):
         List of face area.
     """
     # Get user supplied values
-    cascPath = "haarcascade_frontalface_default.xml"
+    cascPath = os.path.dirname(os.path.realpath(__file__)) + "/haarcascade_frontalface_default.xml"
     cropImageList = []
 
     # Create the haar cascade
@@ -60,12 +73,23 @@ def faceCrop(imagePath, faceMargin):
             return cropImageList
         cropImg = image[y-faceMargin : y+h+faceMargin, x-faceMargin : x+w+faceMargin]
         cropImageList.append(cropImg) # Note: image format -> [y: y+h, x: x+w]
-        #cv2.imshow("cropped", crop_img) # See face area with image viewer.
 
     return cropImageList
 
-def imagesCrop(imageDir, cropDir, faceMargin):
-    """Probes images and crop/save face area.
+def imageCrop(image, faceMargin, croppedFileName):
+    """ Crop face area in image file
+    Args:
+        image : Image file name
+        faceMargin : Marginal space on face area
+        croppedFileName : Cropped file name
+    """
+    cropImageList = faceCrop(image, faceMargin)
+
+    for cropImage in cropImageList:
+        cv2.imwrite(croppedFileName, cropImage)
+
+def imageListCrop(imageDir, cropDir, faceMargin):
+    """Probes images in directory and crop/save face area.
     Args:
         imageDir : Directory to probe images.
         cropDir : Directory to save cropped image.
@@ -74,51 +98,49 @@ def imagesCrop(imageDir, cropDir, faceMargin):
     imageList = glob.glob(imageDir + "*.jpg")
 
     if len(imageList) <= 0:
-        print 'No Image Found'
+        print ('No Image Found')
         return
 
     print("Found {0} images!".format(len(imageList)))
 
     for image in imageList:
-        cropImageList = faceCrop(image, faceMargin)
         index = 0
-        for cropImage in cropImageList:
-            # Cropped image name : cropped_{face index}_{original name}
-            cv2.imwrite(cropDir + "cropped_" + str(index) + "_"
-                    + os.path.basename(image), cropImage)
-            index += 1
+        croppedFileName = cropDir + "cropped_" + str(index) + "_" + os.path.basename(image)
+        imageCrop(image, faceMargin, croppedFileName)
+        index += 1
 
 def traverse_folder(imageDir, cropDir, faceMargin):
-    """Probe folders in image Dir and call imagesCrop
-       Image data format is on below.
+    """ Probe folders in image Dir and call imageListCrop
+        Image data format is on below.
             -> [root directory]/[image classification]/*.jpg
-       Cropped image will be stored on this directory
+        Cropped image will be stored on this directory
             -> [crop dir]/[image classification]/
-       Arg:
+        Arg:
            imageDir : Root directory to probe
            cropDir : Root directory to store cropped images
            faceMargin : Marginal space on face area
     """
-
     for root, dirs, files in os.walk(imageDir):
         print(root)
         for subdir in dirs:
             if not os.path.exists(os.path.join(cropDir, subdir)):
                 os.mkdir(os.path.join(cropDir, subdir))
-            imagesCrop(os.path.join(root, subdir + "/"),
+            imageListCrop(os.path.join(root, subdir + "/"),
                     os.path.join(cropDir, subdir + "/"), faceMargin)
 
 def main():
-    imageRoot = sys.argv[1]
-    cropRoot = sys.argv[2]
-
     # Set faceMargin variable if third argument is set.
-    if len(sys.argv) > 3 :
-        print("sys.argv : " + sys.argv[3])
-        faceMargin = int(sys.argv[3])
+    if sys.argv[1] == "crop_dir" :
+        imageRoot = sys.argv[2]
+        cropRoot = sys.argv[3]
+        faceMargin = int(sys.argv[4])
+        traverse_folder(imageRoot, cropRoot, faceMargin)
+    elif sys.argv[1] == "crop_file" :
+        imageFile = sys.argv[2]
+        cropFile = sys.argv[3]
+        faceMargin = int(sys.argv[4])
+        imageCrop(imageFile, faceMargin, cropFile)
     else:
-        faceMargin = 0
-
-    traverse_folder(imageRoot, cropRoot, faceMargin)
+        print("face_detect_cv3: wrong parameter")
 
 main()

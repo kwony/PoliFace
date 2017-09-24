@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 from .forms import PictureForm
 from .models import Picture
+from .facepredict import predict
 
 def resemble(request):
     # Handle file upload
@@ -15,6 +16,9 @@ def resemble(request):
         if form.is_valid():
             newpic = Picture(picfile=request.FILES['picfile'])
             newpic.save()
+
+            # Predict image in politician list.
+            predict(newpic.picfile.name)
 
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('resemble'))
