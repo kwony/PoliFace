@@ -33,11 +33,11 @@ _FILE_PATTERN = 'polifaces_%s_*.tfrecord'
 
 SPLITS_TO_SIZES = {'train': 700, 'validation': 300}
 
-_NUM_CLASSES = 11
+_NUM_CLASSES = 100
 
 _ITEMS_TO_DESCRIPTIONS = {
     'image': 'A color image of varying size.',
-    'label': 'A single integer between 0 and 11',
+    'label': 'A single integer between 0 and 99',
 }
 
 
