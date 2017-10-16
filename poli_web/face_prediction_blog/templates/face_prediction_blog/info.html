@@ -1,5 +1,13 @@
 {% extends 'face_prediction_blog/base.html' %}
 
 {% block content %}
-    <div> Empty Space(Info) </div>
+    {% for politician in politicians %}
+        <div>
+            <p>{{politician.profile_picture}}</p>
+            <p>{{politician.name}}</p>
+            <p>{{politician.party}}</p>
+            <p>{{politician.region}}</p>
+            <p>{{politician.job}}</p>
+        </div>
+    {% endfor %}
 {% endblock %}

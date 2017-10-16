@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from .forms import PictureForm
-from .models import Picture
+from .models import Picture, Politician
 from .facepredict import predict
 
 def resemble(request):
@@ -39,7 +39,10 @@ def rank(request):
     return render(request, 'face_prediction_blog/rank.html', {})
 
 def info(request):
-    return render(request, 'face_prediction_blog/info.html', {})
+
+    politicians = Politician.objects.all()
+
+    return render(request, 'face_prediction_blog/info.html', {'politicians': politicians})
 
 def home(request):
     return render(request, 'face_prediction_blog/home.html', {})
