@@ -4,7 +4,7 @@
     {% for politician in politicians %}
         <div>
             <p>{{politician.profile_picture}}</p>
-            <p>{{politician.name}}</p>
+            <p><a href="{% url 'info_detail' pk=politician.pk %}">{{politician.name}}</a></p>
             <p>{{politician.party}}</p>
             <p>{{politician.region}}</p>
             <p>{{politician.job}}</p>
