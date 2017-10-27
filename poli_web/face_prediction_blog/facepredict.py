@@ -13,7 +13,7 @@ def crop_face_area(filename):
 	crop_option += file_path + " "
 	crop_option += face_margin + " "
 
-	os.system("python ../face_detect/face_detect_cv3.py " + crop_option)
+	os.system("python3 ../face_detect/face_detect_cv3.py " + crop_option)
 	
 # Predict politician face with image file
 def predict(filename):
@@ -29,4 +29,4 @@ def predict(filename):
 	predict_option += "--image_file=" + file_path + " "
 	predict_option += "--check_point=" + check_point_path + " "
 	predict_option += "--label_file=" + label_path + " "
-	os.system("python ../train_model/slim/predict_image_inception_v2.py " + predict_option)
+	os.system("python3 ../train_model/slim/predict_image_inception_v2.py " + predict_option)

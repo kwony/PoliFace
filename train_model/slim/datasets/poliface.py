@@ -31,13 +31,13 @@ slim = tf.contrib.slim
 
 _FILE_PATTERN = 'polifaces_%s_*.tfrecord'
 
-SPLITS_TO_SIZES = {'train': 700, 'validation': 300}
+SPLITS_TO_SIZES = {'train': 4000, 'validation': 1000}
 
-_NUM_CLASSES = 100
+_NUM_CLASSES = 64
 
 _ITEMS_TO_DESCRIPTIONS = {
     'image': 'A color image of varying size.',
-    'label': 'A single integer between 0 and 99',
+    'label': 'A single integer between 0 and 98',
 }
 
 
