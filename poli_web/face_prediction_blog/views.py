@@ -44,5 +44,9 @@ def info(request):
 
     return render(request, 'face_prediction_blog/info.html', {'politicians': politicians})
 
+def info_detail(request):
+
+    return render(request, 'face_prediction_blog/info.html', {})
+
 def home(request):
     return render(request, 'face_prediction_blog/home.html', {})
