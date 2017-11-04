@@ -12,7 +12,7 @@ class Politician(models.Model):
     age = models.IntegerField(null=True)
     political_preference = models.CharField(max_length=200, null=True)
     shot_history = models.TextField(null=True)
-    profile_picture = models.ImageField(null=True)
+    profile_picture = models.ImageField(upload_to='politiciansUglyFace', null=True)
 
     # To Solve problem with korean letter with ascii code
     # Use this method in the model __unicode__ rather then __str__
@@ -31,3 +31,6 @@ class User_Info(models.Model):
 
 class Picture(models.Model):
     picfile = models.FileField(upload_to='usersUglyFace')
+    
+class Politician_List_File(models.Model):
+    excelfile = models.FileField(upload_to='excel')
