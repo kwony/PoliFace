@@ -4,14 +4,15 @@ from django.utils import timezone
 
 class Politician(models.Model):
     name = models.CharField(max_length=200)
+    eng_name = models.CharField(max_length=200, null=True)
+    born_year = models.CharField(max_length=6, null=True)
     party = models.CharField(max_length=200, null=True)
     job = models.CharField(max_length=200, null=True)
+    political_preference = models.CharField(max_length=200, null=True)
     region = models.CharField(max_length=200, null=True)
     namu_link = models.CharField(max_length=1000, null=True)
-    count = models.IntegerField(null=True)
-    age = models.IntegerField(null=True)
-    political_preference = models.CharField(max_length=200, null=True)
-    shot_history = models.TextField(null=True)
+    short_history = models.TextField(null=True)
+    match_count = models.IntegerField(null=True)
     profile_picture = models.ImageField(upload_to='politiciansUglyFace', null=True)
 
     # To Solve problem with korean letter with ascii code
